@@ -1,11 +1,21 @@
 #!/bin/bash
-
+#
+# Tarrible backup creation
+# 
+# Create a backup of a directory, by specifying the path where the 
+# backup files are (source), the place to write files into (destination),
+# and the location of the index file.
+#
+#
 self=$0
-src=$1; shift 1
-dst=$1; shift 1
-index=$1; shift 1
-extraArgs=$@
+src=$1; shift 1 # source directory
+dst=$1; shift 1 # destination directory (on mounted media)
+index=$1; shift 1 # index directory (not on mounted media)
+extraArgs=$@ # additional arguments for tar
 
+# split size sets the max amount of waste (unused space) per disk,
+# in addition to typical waste from file system overhead and reserved blocks
+# maximum of 10000 splits per disk, so plan accordingly
 splitSize=$((1024*1024)) # split size in KB (1024)
 
 tarCmd="tar --verbose --create --multi-volume --tape-length $splitSize --file \"$dst/current.tar\" --new-volume-script ./create-new-volume.sh --directory \"$src\" $extraArgs . >> \"$index\""
