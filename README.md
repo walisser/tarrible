@@ -126,7 +126,7 @@ After that, you can do a level 1 backup (only the differences since level 0 back
 mount /dev/sdg1 /mnt/disk
 mkdir /mnt/disk/mydata.level1
 cp ~/backup/mydata.level0.snar /tmp/mydata.snar
-./create.sh /mnt/mydata /mnt/disk/mydata.level1 /tmp/mydata.index --incremental /tmp/mydata.snar
+./create.sh /mnt/mydata /mnt/disk/mydata.level1 /tmp/mydata.index --listed-incremental /tmp/mydata.snar
 gzip -9 /tmp/mydata.index
 mv /tmp/mydata.index.gz ~/backups/mydata.level1.gz
 cp /tmp/mydata.snar ~/backups/mydata.level1.snar
