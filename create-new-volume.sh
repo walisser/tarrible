@@ -27,8 +27,11 @@ for i in {1..10000}; do
 
       # get free space on dst to know when its time to switch disks
       # this might be inaccurate since --sync isn't passed to df
-      free=`df "$dst" | tail -n 1 | sed -r 's/\s+/,/g' | cut -d ',' -f4`
-     
+      free=`df --no-sync "$dst" | tail -n 1 | sed -r 's/\s+/,/g' | cut -d ',' -f4`
+      if [ $free -lt $(($splitSize * 4)) ]; then
+         free=`df "$dst" | tail -n 1 | sed -r 's/\s+/,/g' | cut -d ',' -f4`
+      fi
+
       # status line
       >&2 echo $self: split:$i free:$(($free/1024))MB
       

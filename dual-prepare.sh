@@ -18,15 +18,19 @@
 #   ./disk-prepare.sh data1.img data1 data
 #
 self=$0
-device=$1 # /dev/sdx /dev/sdx1 file.img etc
-label=$2  # Filesystem label: backup1 backup2 backup3 etc (unique for every disk in the backup set)
-folder=$3 # Backup location on disk: mybackup.20161105 (same for every disk in the backup set)
-
+disk1=$1 # /dev/sdx /dev/sdx1 file.img etc
+disk2=$2
+label=$3  # Filesystem label: backup1 backup2 backup3 etc (unique for every disk in the backup set)
+folder=$4 # Backup location on disk: mybackup.20161105 (same for every disk in the backup set)
+device="/dev/md0"
 mountPoint=/mnt/tarrible
 
 # make sure nothing is mounted
 umount $mountPoint
 cryptsetup luksClose tarrible
+
+# setup md raid-0
+mdadm --create --verbose $device --level=0 --raid-devices=2 $disk1 $disk2
 
 # setup the entire device/file for encryption
 # use 1MiB alignment to accomodate various filesystems or devices

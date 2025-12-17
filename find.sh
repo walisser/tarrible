@@ -21,8 +21,12 @@ self=$0
 index=$1   # gzipped index from backup creation
 pattern=$2 # file name / globbing pattern
 
+echo "searching \"$1\" for \"$2\""
+
 # read every line from index
 mapfile lines < <(zcat "$index")
+
+echo "mapped file, searching..."
 
 startDisk=none
 startSplit=none

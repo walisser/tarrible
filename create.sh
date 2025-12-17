@@ -13,6 +13,10 @@ dst=$1; shift 1 # destination directory (on mounted media)
 index=$1; shift 1 # index directory (not on mounted media)
 extraArgs=$@ # additional arguments for tar
 
+ppid=$$
+echo $ppid > /sys/fs/cgroup/memory/backup/tasks
+#echo $ppid > /sys/fs/cgroup/blkio/backup/tasks
+
 # split size sets the max amount of waste (unused space) per disk,
 # in addition to typical waste from file system overhead and reserved blocks
 # maximum of 10000 splits per disk, so plan accordingly
